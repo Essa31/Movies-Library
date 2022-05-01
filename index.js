@@ -1,20 +1,15 @@
 'use strict';
 const express = require('express');
+
 const app = express()
 const cors=require("cors")
 app.use(cors())
 
 const port = 3000
+const axios=require("axios").default
 
 
 
-
-
-
-
-
-
-//app.METHOD(PATH, HANDLER)
 app.get("/",handleHome)
 const Data=require("./Movie Data/data.json");
 /*const res = require('express/lib/response');
@@ -43,6 +38,7 @@ function handlefavorite(req,res){
   res.send('Welcome to Favorite Page')
 }
 
+
 function handleErorr(req,res){
   res.status(404).send("The Rote is not exist")
 
@@ -66,16 +62,14 @@ function handleError500() {
 }
 
 
-app.use(function (error, req, res, next) {
-  res.status(500).json(handleError500());
-});
 
-function handleError500() {
-  return {
-    status: 500,
-    responseText: "Sorry, something went wrong",
-  };
-}
+
+
+
+
+
+
+ 
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
