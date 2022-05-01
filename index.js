@@ -1,11 +1,11 @@
 'use strict';
 const express = require('express');
-
+app.use(cors())
 const app = express()
 const port = 3000
 const axios=require("axios").default
 
-app.use(cors())
+
 app.get("/",handleHome)
 const Data=require("./Movie Data/data.json")
 function handleHome(req,res){
@@ -32,6 +32,8 @@ function handlefavorite(req,res){
   res.send('Welcome to Favorite Page')
 }
 
+
+
 app.get("/trending", handlefavorite)
 function handlefavorite(req,res){
 axios.get("https://api.themoviedb.org/3/movie/550?api_key=ac3bb4866789d07b2691b37ce0879ec4")
@@ -46,10 +48,9 @@ axios.get("https://api.themoviedb.org/3/movie/550?api_key=ac3bb4866789d07b2691b3
   res.send("error in getting data from API")
 
 }))
-
-
-
 }
+
+
 
 
 
