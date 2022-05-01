@@ -7,8 +7,11 @@ const port = 3000
 const axios=require("axios").default
 let api_key="668baa4bb128a32b82fe0c15b21dd699&language=en-US&query=The&page=2"
 
+
 app.get("/",handleHome)
-const Data=require("./Movie Data/data.json")
+const Data=require("./Movie Data/data.json");
+/*const res = require('express/lib/response');
+const req = require('express/lib/request');*/
 function handleHome(req,res){
  let data=[]
  Data.data.forEach(element =>{
@@ -32,6 +35,7 @@ function handlefavorite(req,res){
 
   res.send('Welcome to Favorite Page')
 }
+
 
 
 app.get("/search", handlesearch)
@@ -150,14 +154,28 @@ res.json(OriginalLanguage)
 
 
 
-}
-  
-)
-.catch((error =>{
-  console.log(error)
-  res.send("error in getting data from API")
 
-}))
+function handleErorr(req,res){
+  res.status(404).send("The Rote is not exist")
+
+
+
+
+}
+
+
+app.get("*", handleErorr)
+
+
+app.use(function (error, req, res, next) {
+  res.status(500).json(handleError500());
+});
+
+function handleError500() {
+  return {
+    status: 500,
+    responseText: "Sorry, something went wrong",
+  };
 }
 function showOriginalLanguage(title,original_language){
   
@@ -176,6 +194,12 @@ function showOriginalLanguage(title,original_language){
 //original_language
 
 
+
+
+
+
+
+ 
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
