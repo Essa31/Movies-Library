@@ -39,8 +39,8 @@ function showData(title,poster_path,overview){
 app.get("/favorite", handlefavorite)
 
 function handlefavorite(req,res){
-let ms="buhikncfy"
-  res.send(msg)
+
+  res.send('Welcome to Favorite Page')
 }
 
 function handleErorr(req,res){
@@ -64,6 +64,19 @@ function handleError500() {
     responseText: "Sorry, something went wrong",
   };
 }
+
+
+app.use(function (error, req, res, next) {
+  res.status(500).json(handleError500());
+});
+
+function handleError500() {
+  return {
+    status: 500,
+    responseText: "Sorry, something went wrong",
+  };
+}
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
