@@ -1,7 +1,8 @@
 'use strict';
 const express = require('express');
-app.use(cors())
+
 const app = express()
+
 const port = 3000
 const axios=require("axios").default
 
@@ -36,7 +37,8 @@ function handlefavorite(req,res){
 
 app.get("/trending", handlefavorite)
 function handlefavorite(req,res){
-axios.get("https://api.themoviedb.org/3/movie/550?api_key=ac3bb4866789d07b2691b37ce0879ec4")
+  let link ="https://api.themoviedb.org/3/trending/all/week?api_key=37ddc7081e348bf246a42f3be2b3dfd0&language=en-US"
+axios.get(link)
 .then(data=>{
   console.log(data)
   res.send("API give me the data")
