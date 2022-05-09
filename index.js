@@ -3,7 +3,7 @@ const express = require('express');
 
 const app = express()
 const bodyParser = require('body-parser');
-const port = 3000
+const port = 3002
 require('dotenv').config();
 
 const axios=require("axios").default
@@ -59,12 +59,7 @@ function getHandler(req, res) {
  function handleError(error,req,res){
      res.status(500).send(error)
  }
-client.connect().then(() => {
-    
-    app.listen(port, () => {
-        console.log(`Server is running on port ${port}`);
-    })
-})
+
 
 app.get("/",handleHome)
 const Data=require("./Movie Data/data.json");
@@ -254,7 +249,9 @@ function showOriginalLanguage(title,original_language){
 
 
  
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+client.connect().then(() => {
+    
+  app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+  })
 })
