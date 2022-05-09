@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const port = 3002
 require('dotenv').config();
 
-const axios=require("axios").default
+const axios=require("axios");
 
 let api_key="668baa4bb128a32b82fe0c15b21dd699&language=en-US&query=The&page=2"
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -240,7 +240,57 @@ function showOriginalLanguage(title,original_language){
 
 
 
-//original_language
+//task14
+app.put("/update/:id", handleUPDATEid)
+app.delete("/DELETE/:id", handleDELETEid)
+app.get("/getMovie/:id", handlegetMovieid)
+
+function handlegetMovieid(req,res){
+  
+    let sql = `SELECT id FROM table_movie ;`;
+    client.query(sql).then((result)=>{
+        console.log(result);
+        res.json(result.rows);
+    }).catch((err) => {
+         handleError(err, req, res);
+    })
+ }
+function handleUPDATEid(req,res){
+  console.log("AM I ALIVE?");
+  // let id = req.params.id;
+  // let title = req.body.title;
+  // let overview = req.body.overview;
+  // let poster_path=req.body.poster_path;
+  // let sql = `UPDATE table_movie SET title =$1 , overview =$2 , poster_path=$3 WHERE id = ${id} RETURNING *`;
+  // let values = [title, overview,poster_path];
+  // client.query(sql, values).then(result => {
+  //     console.log(result.rows[0]);
+  //     res.json(result.rows[0]);
+  // }).catch()
+  let id = req.params.id;
+  let title = req.body.title;
+  let overview = req.body.overview;
+  let poster_path = req.body.poster_path;
+  let sql = `UPDATE movies SET title =$1 , overview =$2, poster_path=$3  WHERE id = ${id} RETURNING *`;
+  let values = [title, overview, poster_path];
+  client
+    .query(sql, values)
+    .then((result) => {
+      console.log(result.rows[0]);
+      res.json(result.rows[0]);
+    })
+    .catch((err) => res.send("error"));
+}
+function handleDELETEid(req,res){
+  let id = req.params.id;
+    let sql = `DELETE FROM table_movie WHERE id =${id} RETURNING *`;
+    client.query(sql).then(result => {
+        console.log(result.rows[0]);
+        res.status(204).json([]);
+    }).catch(err => {
+        console.log(err);
+    })
+}
 
 
 
