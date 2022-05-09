@@ -4,7 +4,7 @@
 
 ## WRRC
 
-![](wrrc.png)
+![](/2022-05-08%20(16).png)
 
 ## Overview
 

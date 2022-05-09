@@ -2,10 +2,63 @@
 const express = require('express');
 
 const app = express()
+const bodyParser = require('body-parser');
+const port = 3002
+require('dotenv').config();
 
-const port = 3000
 const axios=require("axios").default
+
 let api_key="668baa4bb128a32b82fe0c15b21dd699&language=en-US&query=The&page=2"
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+let url = "postgres://essa:0000@localhost:5432/movie";
+//app.use(express.json());
+const { Client } = require('pg');
+const client = new Client(url);
+
+//routs
+app.post('/addMovie', postHandler);
+app.get('/getMovies', getHandler);
+app.use(handleError);
+//functions
+//http:localhost:3000/postRcipes
+function postHandler(req, res) {
+    console.log(req.body);
+   
+    // let title = req.body.title;
+    // let time = req.body.time;
+    // let summary = req.body.summary;
+    // let image = req.body.image;
+
+    let {title,overview,poster_path} = req.body; //destructuring
+
+
+   let sql = `INSERT INTO table_movie(title,overview,poster_path) VALUES($1, $2, $3) RETURNING *;`; 
+   let values = [title,overview,poster_path];
+   
+    client.query(sql, values).then((result) => {
+        console.log(result);
+        return res.status(201).json(result.rows);
+
+    }).catch((err) => {
+        handleError(err, req, res);
+    })
+
+}
+//http:localhost:3000/getData
+function getHandler(req, res) {
+    let sql = `SELECT * FROM table_movie ;`;
+    client.query(sql).then((result)=>{
+        console.log(result);
+        res.json(result.rows);
+    }).catch((err) => {
+         handleError(err, req, res);
+    })
+ }
+
+ function handleError(error,req,res){
+     res.status(500).send(error)
+ }
 
 
 app.get("/",handleHome)
@@ -138,21 +191,6 @@ function showOverview(title,overview){
 
 
 
-//new
-//original_language
-app.get("/original_language", handleOriginalLanguage)
-function handleOriginalLanguage(req,res){
-  let link ="https://api.themoviedb.org/3/trending/all/week?api_key=37ddc7081e348bf246a42f3be2b3dfd0&language=en-US"
-axios.get(link)
-.then(data=>{
- console.log(data.data.results)
- // res.send("API give me the data")
-let OriginalLanguage=data.data.results.map((c)=>{
-  return new showOriginalLanguage(c.title,c.original_language)
-})
-res.json(OriginalLanguage)
-
-
 
 
 function handleErorr(req,res){
@@ -162,6 +200,17 @@ function handleErorr(req,res){
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 app.get("*", handleErorr)
@@ -200,7 +249,9 @@ function showOriginalLanguage(title,original_language){
 
 
  
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+client.connect().then(() => {
+    
+  app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+  })
 })
