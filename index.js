@@ -24,6 +24,7 @@ const client = new Client({
   },
 });
 //routs
+app.get("/",handleHome)
 app.put("/update/:id", handleUPDATEid)
 app.delete("/DELETE/:id", handleDELETEid)
 app.get("/getMovie/:id", handlegetMovieid)
@@ -71,7 +72,7 @@ function getHandler(req, res) {
  }
 
 
-app.get("/",handleHome)
+
 const Data=require("./Movie Data/data.json");
 /*const res = require('express/lib/response');
 const req = require('express/lib/request');*/
