@@ -3,20 +3,28 @@ const express = require('express');
 
 const app = express()
 const bodyParser = require('body-parser');
-const port = 3002
 require('dotenv').config();
+const port = process.env.PORT
+
 
 const axios=require("axios");
 
 let api_key="668baa4bb128a32b82fe0c15b21dd699&language=en-US&query=The&page=2"
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-let url = "postgres://essa:0000@localhost:5432/movie";
+/*let url = "postgres://essa:0000@localhost:5432/movie";*/
 //app.use(express.json());
+//let DATABASE_URL=process.env.DATABASE_URL
 const { Client } = require('pg');
-const client = new Client(url);
-
+//const client = new Client(DATABASE_URL);
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 //routs
+app.get("/",handleHome)
 app.put("/update/:id", handleUPDATEid)
 app.delete("/DELETE/:id", handleDELETEid)
 app.get("/getMovie/:id", handlegetMovieid)
@@ -64,7 +72,7 @@ function getHandler(req, res) {
  }
 
 
-app.get("/",handleHome)
+
 const Data=require("./Movie Data/data.json");
 /*const res = require('express/lib/response');
 const req = require('express/lib/request');*/
