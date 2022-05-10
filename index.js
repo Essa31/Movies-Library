@@ -17,6 +17,9 @@ const { Client } = require('pg');
 const client = new Client(url);
 
 //routs
+app.put("/update/:id", handleUPDATEid)
+app.delete("/DELETE/:id", handleDELETEid)
+app.get("/getMovie/:id", handlegetMovieid)
 app.post('/addMovie', postHandler);
 app.get('/getMovies', getHandler);
 app.use(handleError);
@@ -241,13 +244,13 @@ function showOriginalLanguage(title,original_language){
 
 
 //task14
-app.put("/update/:id", handleUPDATEid)
-app.delete("/DELETE/:id", handleDELETEid)
-app.get("/getMovie/:id", handlegetMovieid)
+
 
 function handlegetMovieid(req,res){
   
-    let sql = `SELECT id FROM table_movie ;`;
+  let id = req.params.id;
+  
+    let sql = `SELECT * FROM table_movie WHERE id =${id} ;`;
     client.query(sql).then((result)=>{
         console.log(result);
         res.json(result.rows);
@@ -271,7 +274,7 @@ function handleUPDATEid(req,res){
   let title = req.body.title;
   let overview = req.body.overview;
   let poster_path = req.body.poster_path;
-  let sql = `UPDATE movies SET title =$1 , overview =$2, poster_path=$3  WHERE id = ${id} RETURNING *`;
+  let sql = `UPDATE table_movie SET title=$1 , overview=$2, poster_path=$3  WHERE id =${id} RETURNING *`;
   let values = [title, overview, poster_path];
   client
     .query(sql, values)
