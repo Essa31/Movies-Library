@@ -3,28 +3,20 @@ const express = require('express');
 
 const app = express()
 const bodyParser = require('body-parser');
+const port = 3002
 require('dotenv').config();
-const port = process.env.PORT
-
 
 const axios=require("axios");
 
 let api_key="668baa4bb128a32b82fe0c15b21dd699&language=en-US&query=The&page=2"
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-/*let url = "postgres://essa:0000@localhost:5432/movie";*/
+let url = "postgres://essa:0000@localhost:5432/movie";
 //app.use(express.json());
-//let DATABASE_URL=process.env.DATABASE_URL
 const { Client } = require('pg');
-//const client = new Client(DATABASE_URL);
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
+const client = new Client(url);
+
 //routs
-app.get("/",handleHome)
 app.put("/update/:id", handleUPDATEid)
 app.delete("/DELETE/:id", handleDELETEid)
 app.get("/getMovie/:id", handlegetMovieid)
@@ -72,7 +64,7 @@ function getHandler(req, res) {
  }
 
 
-
+app.get("/",handleHome)
 const Data=require("./Movie Data/data.json");
 /*const res = require('express/lib/response');
 const req = require('express/lib/request');*/
@@ -267,7 +259,7 @@ function handlegetMovieid(req,res){
     })
  }
 function handleUPDATEid(req,res){
-  console.log("AM I ALIVE?");
+  
   // let id = req.params.id;
   // let title = req.body.title;
   // let overview = req.body.overview;
@@ -282,8 +274,9 @@ function handleUPDATEid(req,res){
   let title = req.body.title;
   let overview = req.body.overview;
   let poster_path = req.body.poster_path;
-  let sql = `UPDATE table_movie SET title=$1 , overview=$2, poster_path=$3  WHERE id =${id} RETURNING *`;
-  let values = [title, overview, poster_path];
+  let comments=req.body.comments;
+  let sql = `UPDATE table_movie SET title=$1 , overview=$2, poster_path=$3,comments=$4  WHERE id =${id} RETURNING *`;
+  let values = [title, overview, poster_path ,comments];
   client
     .query(sql, values)
     .then((result) => {
