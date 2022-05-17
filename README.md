@@ -3,13 +3,10 @@
 **Essa Iyad Abu al-Khair**
 
 ## WRRC
-<<<<<<< HEAD
 ![](wrrc.png)
 ![](2022-05-08%20(16).png)
-=======
 
 
->>>>>>> c1bb5f83cb79c892c73dc612e5bcdcd458fd808c
 ![](2022-05-12%20(15).png)
 
 ## Overview
