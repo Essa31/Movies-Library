@@ -17,6 +17,11 @@ const { Client } = require('pg');
 const client = new Client(url);
 
 //routs
+app.get("/",handleHome)
+app.get("/trending", handletrending)
+app.get("/search", handlesearch)
+app.get("/overview", handleoverview)
+app.get("/favorite", handlefavorite)
 app.put("/update/:id", handleUPDATEid)
 app.delete("/DELETE/:id", handleDELETEid)
 app.get("/getMovie/:id", handlegetMovieid)
@@ -64,7 +69,7 @@ function getHandler(req, res) {
  }
 
 
-app.get("/",handleHome)
+
 const Data=require("./Movie Data/data.json");
 /*const res = require('express/lib/response');
 const req = require('express/lib/request');*/
@@ -85,7 +90,7 @@ function showData(title,poster_path,overview){
 
 }
 
-app.get("/favorite", handlefavorite)
+
 
 function handlefavorite(req,res){
 
@@ -94,7 +99,7 @@ function handlefavorite(req,res){
 
 
 
-app.get("/search", handlesearch)
+
 
 function handlesearch(req,res){
 //name=The Batman
@@ -115,7 +120,6 @@ axios.get(url)
 
 
 
-app.get("/trending", handletrending)
 function handletrending(req,res){
   let link ="https://api.themoviedb.org/3/trending/all/week?api_key=37ddc7081e348bf246a42f3be2b3dfd0&language=en-US"
 axios.get(link)
@@ -151,7 +155,7 @@ function showTrending(id,title,release_date,poster_path,overview){
 
 //new
 
-app.get("/overview", handleoverview)
+
 function handleoverview(req,res){
   let link ="https://api.themoviedb.org/3/trending/all/week?api_key=37ddc7081e348bf246a42f3be2b3dfd0&language=en-US"
 axios.get(link)
